@@ -37,7 +37,6 @@ struct sde_fence_context {
 	spinlock_t list_lock;
 	u64 context;
 	struct list_head fence_list_head;
-	char name[SDE_FENCE_NAME_SIZE];
 };
 
 /**
@@ -160,6 +159,9 @@ void sde_debugfs_timeline_dump(struct sde_fence_context *ctx,
  */
 void sde_fence_list_dump(struct dma_fence *fence, struct seq_file **s);
 
+void sde_kmem_pool_init(void);
+void sde_kmem_pool_destroy(void);
+
 #else
 static inline void *sde_sync_get(uint64_t fd)
 {
@@ -230,6 +232,9 @@ void sde_fence_list_dump(struct dma_fence *fence, struct seq_file **s)
 {
 	/* do nothing */
 }
+
+static inline void sde_kmem_pool_init(void) {}
+static inline void sde_kmem_pool_destroy(void) {}
 
 #endif /* IS_ENABLED(CONFIG_SW_SYNC) */
 
